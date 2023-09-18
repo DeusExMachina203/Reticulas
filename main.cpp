@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+
 using namespace std;
 
 
@@ -134,8 +136,8 @@ vector<vector<T>> armarRelacion(vector<vector<T>>producto){
 template <typename W>
 bool comprobarSiRelacionDeOrden(vector<vector <W> > relacion){
   bool reflexiva = true;
-  bool antisimetrica = false;
-  bool transitiva = false;
+  bool antisimetrica = true;
+  bool transitiva = true;
 
   //crear un conjunto de todos loselementos que aparecen en la relacion sin repetirlos
   vector<W> elementos;
@@ -174,13 +176,39 @@ bool comprobarSiRelacionDeOrden(vector<vector <W> > relacion){
   //comprobar que la relacion es antisimetrica
   for(int i = 0; i< relacion.size(); i++){
     if(relacion[i][0] != relacion[i][1]){
+      bool falla = false;
       for(int j = i; j< relacion.size(); j++){
-      if(relacion[i] == relacion[j]) antisimetrica = true;
-    }
-    if(!antisimetrica) break;
+        vector<W> temp = {relacion[j][1], relacion[j][0]};
+        if(relacion[i] == temp) falla = true;
+      }
+      if(falla) {
+        antisimetrica = false;
+        break;
+      }
     }
   }
+  cout<< "\n" << antisimetrica;
   
+  //comprobar si es transitiva
+  for(int i = 0; i< relacion.size(); i++){
+    for(int j = 0; j< relacion.size(); j++){
+      bool cumple = false;
+      if(relacion[i][1] == relacion[j][0]){
+        vector<W> temp = {relacion[i][0], relacion[j][1]};
+        for(int k = 0; k<relacion.size(); k++){
+          if(!std::count(relacion.begin(), relacion.end(), temp)){
+            transitiva = false;
+            break;
+          }
+        }
+        if(!transitiva) break;
+      }
+    }
+    if(!transitiva) break;
+  }
+  cout<< "\n" << transitiva;
+
+  return (antisimetrica && transitiva && reflexiva);
 }
 
 
