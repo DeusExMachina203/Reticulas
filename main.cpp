@@ -212,7 +212,7 @@ template<typename W>
 bool comprobarSiEsReticula(vector<vector <W> > relacion){
   vector<W> elementos;
   //separar todos los elementos en un vector sin que se repita
-  for (int i = 0; i< relacion.size(); i++){
+  for (int i = 1; i< relacion.size(); i++){
     for(int j = 0; j< 2; j++){
       if(i == 0 && j == 0) elementos.push_back(relacion[i][j]);
       else{
@@ -229,21 +229,14 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
   for(int i = 0; i< elementos.size(); i++){
     //generar un vector con los elementos con los que no tiene relacion
     vector<W> noRelacionados;
-    for(int j = 0; j < relacion.size(); j++){
-      bool agregar = true;
-      if(elementos[i] != relacion[j][0]){
-        bool agregar = true;
-        for(int k = 0; k< noRelacionados.size(); k++){
-          if(noRelacionados[k] == relacion[j][0]) agregar = false;
+    for(int j = 0; j < elementos.size(); j++){
+      if(elementos[i] != elementos[j]){
+        bool relacionado = false;
+        for(int k = 0; k< relacion.size(); k++){
+          if(elementos[i] == relacion[k][0] && elementos[j] == relacion[k][1]) relacionado = true;
+          if(elementos[i] == relacion[k][1] && elementos[j] == relacion[k][0]) relacionado = true;
         }
-        if(agregar)noRelacionados.push_back(relacion[j][1]);
-      }
-      else if(elementos[i] != relacion[j][1]){
-        bool agregar = true;
-        for(int k = 0; k< noRelacionados.size(); k++){
-          if(noRelacionados[k] == relacion[j][0]) agregar = false;
-        }
-        if(agregar)noRelacionados.push_back(relacion[j][0]);
+        if(!relacionado) noRelacionados.push_back(elementos[j]);
       }
     }
     cout<< "\nLos elementos que no son comparables con "<< elementos[i] << " son:";
@@ -303,8 +296,8 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
         if(!relacionados) return false;
       }
     }
-    return true;
   }
+  return true;
 }
 
 
