@@ -318,13 +318,23 @@ int main() {
 
   if(tipo == 1) {
     relacionNumeros = armarRelacion <int> (productoNumeros);
-    cout<< "\nsi es que es relacion de orden"<< comprobarSiRelacionDeOrden <int> (relacionNumeros);
-    cout<< "\nsi es que es reticula" << comprobarSiEsReticula <int> (relacionNumeros);
+    if(comprobarSiRelacionDeOrden <int> (relacionNumeros)){
+      cout<< "\nEs relacion de orden y ";
+      if(comprobarSiEsReticula <int> (relacionNumeros)) cout<< "tambien es una reticula.";
+      else cout<< "no es una reticula.";
+    }
+    else cout<< "\nNo es relacion de orden, por lo tanto, tampoco es una reticula.";
   }
   else {
     relacionLetras = armarRelacion<char>(productoLetras);
-    cout<< "\nsi es que es relacion de orden"<<comprobarSiRelacionDeOrden<char>(relacionLetras);
-    cout<< "\nsi es que es reticula" << comprobarSiEsReticula <char> (relacionLetras);
+    // cout<< "\nsi es que es relacion de orden"<<comprobarSiRelacionDeOrden<char>(relacionLetras);
+    // cout<< "\nsi es que es reticula" << comprobarSiEsReticula <char> (relacionLetras);
+    if(comprobarSiRelacionDeOrden <char> (relacionLetras)){
+      cout<< "\nEs relacion de orden y ";
+      if(comprobarSiEsReticula <char> (relacionLetras)) cout<< "también es una reticula.";
+      else cout<< "no es una reticula.";
+    }
+    else cout<< "\nNo es relacion de orden, por lo tanto, tampoco es una reticula.";
   }
 
 
