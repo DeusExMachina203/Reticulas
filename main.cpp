@@ -224,76 +224,88 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
       }
     }
   }
-
+  cout<< "\nLos elementos son:";
+  for(int i = 0; i< elementos.size(); i++) cout<< " " << elementos[i];
+  
   //para cada elemento
   for(int i = 0; i< elementos.size(); i++){
     //generar un vector con los elementos con los que no tiene relacion
     vector<W> noRelacionados;
     for(int j = 0; j < elementos.size(); j++){
       if(elementos[i] != elementos[j]){
-        bool relacionado = false;
+        bool relacionado = false;  
         for(int k = 0; k< relacion.size(); k++){
           if(elementos[i] == relacion[k][0] && elementos[j] == relacion[k][1]) relacionado = true;
           if(elementos[i] == relacion[k][1] && elementos[j] == relacion[k][0]) relacionado = true;
+          //asegurate de que el elemento no está ya en el vector
+          for(int l = 0; l< noRelacionados.size(); l++){
+            if(noRelacionados[l] == elementos[j]) relacionado = true;
+          }
         }
         if(!relacionado) noRelacionados.push_back(elementos[j]);
       }
     }
+
+
     cout<< "\nLos elementos que no son comparables con "<< elementos[i] << " son:";
-    for(int j = 0; j< noRelacionados.size(); j++) cout<< " " << noRelacionados[j];
-    //comprobar que el elemento con respecto a los elementos con los que no tiene relacion tienen tanto una maxima cota inferior como una minima cota superior
-    vector<W> maximos;
-    for(int k = 0; k< noRelacionados.size(); k++){
-      for(int l = 0; l <elementos.size(); l++){
-        if(elementos[i] != elementos[l]){
-          bool relacionElemActual = false;
-          bool relacionElemNoRelacionado = false;
-          for(int m = 0; m< relacion.size(); m++){
-            if(elementos[i] == relacion[m][0] && elementos[l] == relacion[m][1]) relacionElemActual = true;
-            if(noRelacionados[k] == relacion[m][0] && elementos[l] == relacion[m][1]) relacionElemNoRelacionado = true; 
+    for(int j = 0; j< noRelacionados.size(); j++) cout<< " " << noRelacionados[j] << ",";
+    if(noRelacionados.size() != 0){ 
+      //comprobar que el elemento con respecto a los elementos con los que no tiene relacion tienen tanto una maxima cota inferior como una minima cota superior
+      for(int k = 0; k< noRelacionados.size(); k++){
+        vector<W> maximos;
+        for(int l = 0; l <elementos.size(); l++){
+          if(elementos[i] != elementos[l]){
+            bool relacionElemActual = false;
+            bool relacionElemNoRelacionado = false;
+            for(int m = 0; m< relacion.size(); m++){
+              if(elementos[i] == relacion[m][0] && elementos[l] == relacion[m][1]) relacionElemActual = true;
+              if(noRelacionados[k] == relacion[m][0] && elementos[l] == relacion[m][1]) relacionElemNoRelacionado = true; 
+            }
+            if(relacionElemActual && relacionElemNoRelacionado) maximos.push_back(elementos[l]);
           }
-          if(relacionElemActual && relacionElemNoRelacionado) maximos.push_back(elementos[l]);
-        }
-      }   
-    }
-
-    vector<W> minimos;
-    for(int k = 0; k< noRelacionados.size(); k++){
-      for(int l = 0; l <elementos.size(); l++){
-        if(elementos[i] != elementos[l]){
-          bool relacionElemActual = false;
-          bool relacionElemNoRelacionado = false;
-          for(int m = 0; m< relacion.size(); m++){
-            if(elementos[i] == relacion[m][1] && elementos[l] == relacion[m][0]) relacionElemActual = true;
-            if(noRelacionados[k] == relacion[m][1] && elementos[l] == relacion[m][0]) relacionElemNoRelacionado = true; 
+        }   
+        //imprime los maximos
+        cout<< "\nLos maximos de"<< elementos[i] << ',' << noRelacionados[k] <<":";
+        for(int j = 0; j< maximos.size(); j++) cout<< " " << maximos[j] << ",";
+        vector<W> minimos;
+        for(int l = 0; l <elementos.size(); l++){
+          if(elementos[i] != elementos[l]){
+            bool relacionElemActual = false;
+            bool relacionElemNoRelacionado = false;
+            for(int m = 0; m< relacion.size(); m++){
+              if(elementos[i] == relacion[m][1] && elementos[l] == relacion[m][0]) relacionElemActual = true;
+              if(noRelacionados[k] == relacion[m][1] && elementos[l] == relacion[m][0]) relacionElemNoRelacionado = true; 
+            }
+            if(relacionElemActual && relacionElemNoRelacionado) minimos.push_back(elementos[l]);
           }
-          if(relacionElemActual && relacionElemNoRelacionado) minimos.push_back(elementos[l]);
+        }   
+        
+        //impirme los minimos
+        cout<< "\nLos minimos de"<< elementos[i] << ',' << noRelacionados[k] <<":";
+        for(int j = 0; j< minimos.size(); j++) cout<< " " << minimos[j] << ",";
+        // comprobar que todos los maximos esten relacionados entre si
+        for(int k = 0; k < maximos.size(); k++){
+          for(int l = k; l < maximos.size(); l++){
+            bool relacionados = false;
+            for(int m = 0; m< relacion.size(); m++){
+              if(maximos[k] == relacion[m][0] && maximos[l] == relacion[m][1]) relacionados = true;
+              if(maximos[k] == relacion[m][1] && maximos[l] == relacion[m][0]) relacionados = true;
+            }
+            if(!relacionados) return false;
+          }
         }
-      }   
-    }
 
-    if(maximos.size() == 0 || minimos.size() == 0) return false;
-
-    // comprobar que todos los maximos esten relacionados entre si
-    for(int k = 0; maximos.size(); k++){
-      for(int l = k+1; maximos.size(); l++){
-        bool relacionados = false;
-        for(int m = 0; m< relacion.size(); m++){
-          if(maximos[k] == relacion[m][0] && maximos[l] == relacion[m][1]) relacionados = true;
-          if(maximos[k] == relacion[m][1] && maximos[l] == relacion[m][0]) relacionados = true;
+        // comprobar que todos los minimos esten relacionados entre si
+        for(int k = 0; k < minimos.size(); k++){
+          for(int l = k; l < minimos.size(); l++){
+            bool relacionados = false;
+            for(int m = 0; m< relacion.size(); m++){
+              if(minimos[k] == relacion[m][0] && minimos[l] == relacion[m][1]) relacionados = true;
+              if(minimos[k] == relacion[m][1] && minimos[l] == relacion[m][0]) relacionados = true;
+            }
+            if(!relacionados) return false;
+          }
         }
-        if(!relacionados) return false;
-      }
-    }
-    // comprobar que todos los minimos esten relacionados entre si
-    for(int k = 0; minimos.size(); k++){
-      for(int l = k+1; minimos.size(); l++){
-        bool relacionados = false;
-        for(int m = 0; m< relacion.size(); m++){
-          if(minimos[k] == relacion[m][0] && minimos[l] == relacion[m][1]) relacionados = true;
-          if(minimos[k] == relacion[m][1] && minimos[l] == relacion[m][0]) relacionados = true;
-        }
-        if(!relacionados) return false;
       }
     }
   }
