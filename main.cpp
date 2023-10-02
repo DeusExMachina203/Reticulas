@@ -224,8 +224,6 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
       }
     }
   }
-  cout<< "\nLos elementos son:";
-  for(int i = 0; i< elementos.size(); i++) cout<< " " << elementos[i];
   
   //para cada elemento
   for(int i = 0; i< elementos.size(); i++){
@@ -247,8 +245,6 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
     }
 
 
-    cout<< "\nLos elementos que no son comparables con "<< elementos[i] << " son:";
-    for(int j = 0; j< noRelacionados.size(); j++) cout<< " " << noRelacionados[j] << ",";
     if(noRelacionados.size() != 0){ 
       //comprobar que el elemento con respecto a los elementos con los que no tiene relacion tienen tanto una maxima cota inferior como una minima cota superior
       for(int k = 0; k< noRelacionados.size(); k++){
@@ -264,9 +260,7 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
             if(relacionElemActual && relacionElemNoRelacionado) maximos.push_back(elementos[l]);
           }
         }   
-        //imprime los maximos
-        cout<< "\nLos maximos de"<< elementos[i] << ',' << noRelacionados[k] <<":";
-        for(int j = 0; j< maximos.size(); j++) cout<< " " << maximos[j] << ",";
+        
         vector<W> minimos;
         for(int l = 0; l <elementos.size(); l++){
           if(elementos[i] != elementos[l]){
@@ -280,9 +274,6 @@ bool comprobarSiEsReticula(vector<vector <W> > relacion){
           }
         }   
         
-        //impirme los minimos
-        cout<< "\nLos minimos de"<< elementos[i] << ',' << noRelacionados[k] <<":";
-        for(int j = 0; j< minimos.size(); j++) cout<< " " << minimos[j] << ",";
         // comprobar que todos los maximos esten relacionados entre si
         for(int k = 0; k < maximos.size(); k++){
           for(int l = k; l < maximos.size(); l++){
